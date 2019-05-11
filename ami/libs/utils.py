@@ -65,7 +65,7 @@ def yaml_writeln(stream, path):
 def yaml_read(path):
     with open(path, 'r') as outfile:
         try:
-            data = yaml.load(outfile)
+            data = yaml.load(outfile, Loader=yaml.FullLoader)
         except yaml.YAMLError as exc:
             print(exc)
         else:

@@ -1,6 +1,5 @@
 from ami.clis.base import Base
 from signal import signal, SIGINT
-from agent import create_app
 from ami.libs import utils
 from ami.parser import parse
 from ami.libs import ansible_lib
@@ -10,7 +9,7 @@ import yaml, os
 class Playbook(Base):
     """
         usage:
-        playbook start [-f FILE] [-i INVENTORY]
+        playbook start [-f FILE]
 
         Run ami playbook [command] [option]
 
@@ -34,11 +33,13 @@ class Playbook(Base):
             if not checks:
                 utils.log_err("Repo Not Cloning")
                 exit()
+            host = "[web]\nlocalhost ansible_connection=local"
+            utils.create_file("inventory", app_dir, host)
             checks = utils.yaml_writeln(playbook,app_dir+"/ami.yml")
             if not checks:
                 utils.log_err("Playbook Not Created")
                 exit()
             os.chdir(app_dir)
             ami_file = utils.yaml_read("ami.yml")
-            ansible_lib.play_book(playbook=ami_file)
+            ansible_lib.play_book(playbook=ami_file, inventory=app_dir+"/inventory")
             exit()

@@ -1,6 +1,5 @@
 from ami.clis.base import Base
 from signal import signal, SIGINT
-from agent import create_app
 from ami.libs import utils, ssh_lib
 import yaml
 import os
