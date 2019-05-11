@@ -12,9 +12,7 @@ import os, json
 class ResultCallback(CallbackBase):
     def v2_runner_on_ok(self, result, **kwargs):
         host = result._host
-        print(host)
-        data = result._result
-        print(data)
+        print(json.dumps({host.name: result._result}, indent=4))
 
 
 def play_book(playbook, passwords={}, inventory=None, extra_var={}):
