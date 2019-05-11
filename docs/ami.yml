@@ -1,0 +1,4 @@
+ubuntu:
+  hosts: all
+  roles:
+    - python3

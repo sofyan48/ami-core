@@ -1,0 +1,15 @@
+exclude .gitignore
+exclude .coverage
+exclude .travis.yml
+include README.md
+include setup.cfg
+include requirements.txt
+include .env
+include ami/libs/templates/nvc.yml
+include agent
+prune .cache
+prune .git
+prune build
+prune dist
+recursive-exclude *.egg-info *
+recursive-include tests *
