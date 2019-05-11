@@ -33,13 +33,14 @@ class Playbook(Base):
             if not checks:
                 utils.log_err("Repo Not Cloning")
                 exit()
-            host = "[web]\nlocalhost ansible_connection=local"
+            host = "[nvc_lite]\nlocalhost ansible_connection=local"
             utils.create_file("inventory", app_dir, host)
-            checks = utils.yaml_writeln(playbook,app_dir+"/ami.yml")
+            checks = utils.yaml_writeln([playbook],app_dir+"/ami.yml")
             if not checks:
                 utils.log_err("Playbook Not Created")
                 exit()
-            os.chdir(app_dir)
-            ami_file = utils.yaml_read("ami.yml")
-            ansible_lib.play_book(playbook=ami_file, inventory=app_dir+"/inventory")
+            ami_file = app_dir+"/ami.yml"
+            # ami_file = utils.yaml_read("ami.yml")
+            # ansible_lib.play_book(playbook=ami_file, inventory=app_dir+"/inventory")
+            ansible_lib.playbook_file(playbook=ami_file, inventory=app_dir+"/inventory")
             exit()

@@ -5,7 +5,7 @@ include README.md
 include setup.cfg
 include requirements.txt
 include .env
-include ami/libs/templates/nvc.yml
+include ami/libs/templates/repo.yml
 include agent
 prune .cache
 prune .git
