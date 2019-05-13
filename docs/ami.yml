@@ -1,4 +1,9 @@
 ubuntu:
   hosts: all
   roles:
+    - common
+    - acl
+    - ufw
+    - mariadb
     - php
+    - nginx

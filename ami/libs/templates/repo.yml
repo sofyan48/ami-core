@@ -1,6 +1,6 @@
 nvc:
   ubuntu:
-    url: "https://github.com/ami-project/ubuntu-playbook.git"
+    url: "https://github.com/ami-project/ami-playbook.git"
     description: "Template that installs NVC Lite ubuntu."
     parameters:
       roles:
@@ -25,7 +25,7 @@ nvc:
           - vars/all.yml
 
   centos:
-    url: "https://github.com/ami-project/centos-playbook.git"
+    url: "https://github.com/ami-project/ami-playbook.git"
     description: "Template that installs NVC Lite ubuntu."
     parameters:
       roles:
