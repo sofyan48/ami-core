@@ -1,0 +1,47 @@
+config:
+  ubuntu:
+    url: "https://github.com/ami-project/ami-playbook.git"
+    description: "Template that installs NVC Lite ubuntu."
+    parameters:
+      gather_facts:
+        type: boolean
+        label: gather option
+        default: 'no'
+      hosts:
+        type: string
+        label: host for execute
+        default: all
+      username:
+        type: string
+        label: username
+      password:
+        type: string
+        label: username
+      vars:
+        label: Global Variabels
+        type: list
+        rules:
+          - commons
+          - nginx
+          - php
+          - php5
+          - mysql
+          - composer
+      roles:
+        label: Global Variabels
+        type: list
+        rules:
+          - php
+          - php5
+          - common
+          - composer
+          - mariadb
+          - mysql
+          - nginx
+          - apache
+          - node
+          - ufw
+          - wordpress
+          - joomla
+          - flask
+          - drupal

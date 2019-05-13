@@ -1,0 +1,197 @@
+php:
+  handlers:
+    - name: restart php7.2-fpm
+      service: name=php7.2-fpm enabled=yes state=restarted
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted
+  tasks:
+    - name: Update apt
+      apt: update_cache=yes
+    - name: Install PHP
+      apt: pkg=php7.2 state=latest
+    - name: Install php7-fpm
+      apt: pkg=php7.2-fpm state=latest
+    - name: Install PHP Packages
+      apt: pkg={{ php.packages }} state=latest
+    - stat: path=/etc/php/7.2/fpm/php.ini
+      register: phpfpm
+    - stat: path=/etc/php/7.2/cli/php.ini
+      register: phpcli
+    - name: ensure timezone is set in cli php.ini
+      lineinfile:
+          dest: /etc/php/7.2/cli/php.ini
+          regexp: 'date.timezone ='
+          line: 'date.timezone = {{ server.timezone }}'
+php5:
+  handlers:
+    - name: restart php5.6-fpm
+      service: name=php5.6-fpm enabled=yes state=restarted
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted
+  tasks:
+    - name: Add PPA Repository
+      apt_repository:
+        repo: ppa:ondrej/{{ php5.ppa }}
+    - name: Update apt
+      apt: update_cache=yes
+    - name: Install PHP
+      apt: pkg=php5.6 state=latest
+    - name: Install php5.6-fpm
+      apt: pkg=php5.6-fpm state=latest
+    - name: Install PHP Packages
+      apt: pkg={{ php5.packages }} state=latest
+      when: php.packages is defined
+    - stat: path=/etc/php/5.6/fpm/php.ini
+      register: phpfpm
+    - stat: path=/etc/php/5.6/cli/php.ini
+      register: phpcli
+    - name: ensure timezone is set in cli php.ini
+      lineinfile:
+        dest: /etc/php/5.6/cli/php.ini
+        regexp: 'date.timezone ='
+        line: 'date.timezone = {{ server.timezone }}'
+common:
+  handlers:
+  tasks:
+    - name: Update apt
+      apt: update_cache=yes
+    - name: Install Extra Packages
+      apt: pkg={{ commons.packages }} state=latest update_cache=yes
+composer:
+  handlers:
+  tasks:
+    - name: Install Composer
+      shell: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer creates=/usr/local/bin/composer
+mariadb:
+  handlers:
+  tasks:
+    - name: Install MariaDB
+      apt:
+        name: mariadb-server
+        state: present
+        force: yes
+mysql:
+  handlers:
+  tasks:
+    - shell: hostname
+      register: current_hostname
+    - name: mysql | Install MySQL Packages
+      apt: pkg={{ mysql.packages }} state=latest
+    - name: mysql | Update root password for all root accounts
+      mysql_user: name=root host={{ item }} check_implicit_admin=yes password={{ mysql.root_password }} login_user=root login_password={{ mysql.root_password }}
+      with_items:
+        - "{{ inventory_hostname }}"
+        - 127.0.0.1
+        - ::1
+        - localhost
+      when: inventory_hostname != 'localhost'
+    - name: mysql | Create Databases
+      mysql_db: name={{ mysql.database }} state=present login_user=root login_password={{ mysql.root_password }}
+    - name: mysql | Import dump
+      mysql_db: name={{ mysql.database }} state=import login_user=root login_pasword={{ mysql.root_password }} target=/wwww/{{ mysql.dump }}
+      when: mysql.dump
+    - name: mysql | Ensure anonymous users are not in the database
+      mysql_user: name='' host={{ item }} state=absent login_user=root login_password={{ mysql.root_password }}
+      with_items:
+        - localhost
+nginx:
+  handlers:
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted
+    - name: reload nginx
+      service:
+        name: nginx
+        state: reloaded
+  tasks:
+    - name: Install Nginx
+      package:
+        name: nginx
+        state: present
+        force: yes
+        update_cache: yes
+    - name: Add  Nginx.Conf
+      copy: src=nginx.conf dest=/etc/nginx owner=root group=root
+    - name: Add  Config
+      copy: src=h5bp dest=/etc/nginx owner=root group=root
+    - name: Symlink default site
+      template: src=default.j2 dest=/etc/nginx/conf.d/main.conf
+    - name: Creates directory
+      file:
+        path: /etc/nginx/modules
+        state: directory
+    - name: Set Nginx PID
+      lineinfile:
+        dest: /etc/nginx/nginx.conf
+        regexp: "^pid"
+        line: "pid /run/nginx.pid;"
+        state: present
+    - name: Set Nginx user
+      lineinfile:
+        dest: /etc/nginx/nginx.conf
+        regexp: "^user"
+        line: "user www-data;"
+        state: present
+apache:
+  handlers:
+    - name: restart httpd
+      service:
+        name: httpd
+        state: restarted
+    - name: reload httpd
+      service:
+        name: httpd
+        state: reloaded
+  tasks:
+    - name: Install Httpd
+      package:
+        name: apache2
+        state: present
+        force: yes
+        update_cache: yes
+node:
+  - name: Add Node source package
+    raw: curl -sL https://deb.nodesource.com/setup_6.x -o nodesource_setup.sh
+  - name: Update Source Package
+    raw: sudo bash nodesource_setup.sh
+  - name: Install Node
+    apt: pkg=nodejs state=latest
+ufw:
+  handlers:
+  tasks:
+    - name: Enable Firewall
+      ufw:
+        state: enabled
+        policy: deny
+    - name: Allow HTTP
+      ufw:
+        rule: allow
+        port: 80
+        proto: tcp
+    - name: Allow HTTPS
+      ufw:
+        rule: allow
+        port: 443
+        proto: tcp
+    - name: Allow SSH
+      ufw:
+        rule: allow
+        port: 22
+        proto: tcp
+wordpress:
+  handlers:
+  tasks:
+joomla:
+  handlers:
+  tasks:
+flask:
+  handlers:
+  tasks:
+drupal:
+  handlers:
+  tasks:
