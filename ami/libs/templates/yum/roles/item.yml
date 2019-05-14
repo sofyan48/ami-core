@@ -181,13 +181,13 @@ node:
   handlers:
   tasks:
     - name: Add Node source package
-      raw: curl -sL https://deb.nodesource.com/setup_6.x -o nodesource_setup.sh
+      raw: curl -sL https://rpm.nodesource.com/setup_10.x
     - name: Update Source Package
-      raw: sudo bash nodesource_setup.sh
+      raw: sudo bash setup_10.x
     - name: Install Node
-      yum: pkg=nodejs state=latest
-    - name: Install NPM
-      yum: pkg=npm state=latest
+      yum:
+        name: nodejs 
+        state: latest
 wordpress:
   handlers:
   tasks:
