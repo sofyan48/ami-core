@@ -80,7 +80,7 @@ composer:
 mariadb:
   handlers:
   tasks:
-   - name: Install Mariadb
+    - name: Install Mariadb
       yum:
         name: mariadb-server
         state: present
