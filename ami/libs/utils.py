@@ -74,6 +74,15 @@ def yaml_read(path):
 def nvc_repo():
     return yaml_read(app_root+"/templates/repo.yml")
 
+def nvc_config():
+    return yaml_read(app_root+"/templates/config.yml")
+
+def nvc_config_roles(pkg):
+    return yaml_read(app_root+"/templates/"+pkg+"/roles/item.yml")
+
+def nvc_config_vars(pkg):
+    return yaml_read(app_root+"/templates/"+pkg+"/vars/item.yml")
+
 def get_cpu_info():
     cpu = psutil.cpu_times()
     count_cpu = psutil.cpu_count()

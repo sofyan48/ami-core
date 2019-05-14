@@ -1,6 +1,6 @@
 config:
-  ubuntu:
-    url: "https://github.com/ami-project/ami-playbook.git"
+  apt:
+    url: "https://github.com/ami-project/ami-packages.git"
     description: "Template that installs NVC Lite ubuntu."
     parameters:
       gather_facts:
@@ -20,6 +20,8 @@ config:
       vars:
         label: Global Variabels
         type: list
+        default:
+          - vars/all.yml
         rules:
           - commons
           - nginx
