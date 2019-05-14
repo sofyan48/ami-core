@@ -3,6 +3,9 @@ config:
     url: "https://github.com/ami-project/ami-packages.git"
     description: "Template that installs NVC Lite ubuntu."
     parameters:
+      vars:
+        label: Global Variabels
+        type: list
       gather_facts:
         type: boolean
         label: gather option
@@ -16,20 +19,13 @@ config:
         type: list
         default:
           - vars/all.yml
-        rules:
-          - commons
-          - nginx
-          - php
-          - php5
-          - mysql
-          - composer
       roles:
         label: Global Variabels
         type: list
         rules:
           - php
           - php5
-          - common
+          - commons
           - composer
           - mariadb
           - mysql
