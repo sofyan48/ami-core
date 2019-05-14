@@ -5,7 +5,6 @@ from ami.parser import parse
 from ami.libs import ansible_lib
 import yaml, os
 
-
 class Playbook(Base):
     """
         usage:
