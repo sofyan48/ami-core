@@ -169,12 +169,14 @@ apache:
         force: yes
         update_cache: yes
 node:
-  - name: Add Node source package
-    raw: curl -sL https://deb.nodesource.com/setup_6.x -o nodesource_setup.sh
-  - name: Update Source Package
-    raw: sudo bash nodesource_setup.sh
-  - name: Install Node
-    apt: pkg=nodejs state=latest
+  handlers:
+  tasks:
+    - name: Add Node source package
+      raw: curl -sL https://deb.nodesource.com/setup_6.x -o nodesource_setup.sh
+    - name: Update Source Package
+      raw: sudo bash nodesource_setup.sh
+    - name: Install Node
+      apt: pkg=nodejs state=latest
 ufw:
   handlers:
   tasks:

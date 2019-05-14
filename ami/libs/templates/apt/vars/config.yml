@@ -118,3 +118,36 @@ vars:
           type: string
           label: Drupal Emails
           default: admin@admin.com
+    node:
+      parameters:
+        install:
+          type: string
+          label: Install Priority
+          default: '1'
+
+    ufw:
+      parameters:
+        install:
+          type: string
+          label: Install Priority
+          default: '1'
+    joomla:
+      parameters:
+        install:
+          type: string
+          label: Install Priority
+          default: '1'
+
+    flask:
+      parameters:
+        install:
+          type: string
+          label: Install Priority
+          default: '1'
+
+    apache:
+      parameters:
+        install:
+          type: string
+          label: Install Priority
+          default: '1'
