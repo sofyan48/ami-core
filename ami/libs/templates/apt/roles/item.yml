@@ -109,7 +109,8 @@ mysql:
       mysql_db: name={{ mysql.database }} state=import login_user=root login_pasword={{ mysql.root_password }} target=/wwww/{{ mysql.dump }}
       when: mysql.dump
     - name: mysql | Ensure anonymous users are not in the database
-      mysql_user: name='' host={{ item }} state=absent login_user=root login_password={{ mysql.root_password }}
+      mysql_user: 
+      name='' host={{ item }} state=absent login_user=root login_password={{ mysql.root_password }}
       with_items:
         - localhost
 nginx:
@@ -200,20 +201,17 @@ ufw:
 wordpress:
   handlers:
   tasks:
-    - name: Create a database user
-      mysql_user:
+    - mysql_user:
         name: "{{ wordpress.username }}"
         password: "{{ wordpress.password }}"
         priv: "*.*:ALL"
         host: localhost
         state: present
-    - name: Create a New WP DB called
-      mysql_db:
+    - mysql_db:
         name: "{{ wordpress.db_name }}"
         state: present
         login_user: "{{ wordpress.username }}"
         login_password: "{{ wordpress.password }}"
-      state: present
     - name: Install WP-CLI
       get_url:
         url: https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
@@ -247,3 +245,36 @@ flask:
 drupal:
   handlers:
   tasks:
+    - name: clone Drush repository
+      git:
+        repo: https://github.com/drush-ops/drush.git
+        version: "9.3.0"
+        dest: /opt/drush
+    - name: install Drush dependencies with Composer
+      shell: composer install
+      args:
+        chdir: "/opt/drush"
+    - name: clone Drupal repository
+      git:
+        repo: http://git.drupal.org/project/drupal.git
+        version: "{{ drupal.version }}"
+        dest: "{{ drupal.root_dir }}"
+    - name: install Drupal dependencies with Composer
+      shell: composer install
+      args:
+        chdir: "{{ drupal.root_dir }}"
+        creates: "{{ drupal.root_dir }}/vendor/autoload.php"
+    - name: install Drupal
+      shell: drush si -y --site-name="NVC LITE" --account-name={{ drupal.username }} --account-pass="{{ drupal.password }}" --db-url=mysql://{{ drupal.username }}:{{ drupal.password }}@{{ hostvars['db-server']['ansible_default_ipv4']['address'] }}/{{ drupal.db_name }}
+      args:
+        chdir: "{{ drupal.root_dir }}"
+    - name: set permissions on the settings file
+      file:
+        path: "{{ drupal.root_dir }}/sites/default/settings.php"
+        mode: 0744
+    - name: set permissions on files direcotry
+      file:
+        path: "{{ drupal.root_dir }}/sites/default/files"
+        mode: 0777
+        state: directory
+        recurse: yes

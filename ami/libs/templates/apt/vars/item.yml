@@ -37,3 +37,12 @@ wordpress:
   password: admin
   wp_url: "103.93.54.225"
   email: admin@admin.com
+
+drupal:
+  version: "8.7.1"
+  db_name: drupal
+  root_dir: "{{ nginx.docroot }}"
+  username: admin
+  password: admin
+  wp_url: ""
+  email: admin@admin.com
