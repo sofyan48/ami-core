@@ -76,12 +76,19 @@ mariadb:
         name: mariadb-server
         state: present
         force: yes
-    - name: Reset password Mariadb
-      raw: systemctl stop mariadb"
-    - name: Reset password Mariadb
-      raw: systemctl set-environment MYSQLD_OPTS="--skip-grant-tables --skip-networking"
-    - name: Reset password Mariadb
-      raw: systemctl start mariadb"
+    - name: update mysql root password for all root accounts
+      mysql_user:
+        name: root
+        host: "{{ item }}"
+        password: "{{ mariadb.password }}"
+        login_user: root
+        login_password: "{{ mariadb.password }}"
+        check_implicit_admin: yes
+        priv: "*.*:ALL,GRANT"
+      with_items:
+        - "{{ ansible_hostname }}"
+        - 127.0.0.1
+        - ::1
 mysql:
   handlers:
   tasks:
@@ -194,6 +201,26 @@ ufw:
 wordpress:
   handlers:
   tasks:
+    - name: Create a New WP DB called
+      mysql_db: name={{ wordpress.db_name }} state=present login_user=root login_password={{ mariadb.password }}
+    - name: Install WP-CLI
+      get_url:
+        url: https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+        dest: /usr/bin/wp
+        mode: 0755
+    - name: Downloading Core
+      shell: wp download core
+      args:
+        chdir: /var/www/html
+    - name: Configuring Core
+      shell: wp core config --dbname={{ wordpress.db_name }} --dbuser=root --dbpass={{ mariadb.password }} --dbhost=localhost --dbprefix=wp_
+      args:
+        chdir: /var/www/html
+    - name: Installing Core
+      shell: wp core install --url="{{ wordpress.wp_url }}" --title="NVC LITE WORDPRESS" --admin_user="{{ wordpress.username }}" --admin_password="{{ wordpress.password }}" --admin_email="{{ wordpress.email }}"
+      args:
+        chdir: /var/www/html
+
 joomla:
   handlers:
   tasks:

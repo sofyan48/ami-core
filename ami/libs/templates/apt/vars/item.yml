@@ -22,3 +22,12 @@ mysql:
   packages: [ mysql-server, mysql-client,python-mysqldb ]
 composer:
   install: '1'
+mariadb:
+  password: root
+wordpress:
+  db_name: wordpress
+  root_dir: {{ nginx.docroot }}
+  username: admin
+  password: admin
+  wp_url: localhost
+  email: admin@admin.com
