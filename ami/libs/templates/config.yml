@@ -11,12 +11,6 @@ config:
         type: string
         label: host for execute
         default: all
-      username:
-        type: string
-        label: username
-      password:
-        type: string
-        label: username
       vars:
         label: Global Variabels
         type: list
