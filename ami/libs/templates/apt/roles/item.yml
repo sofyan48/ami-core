@@ -79,22 +79,13 @@ mariadb:
     - name: stop mariadb
       shell: systemctl stop mariadb
     - name: configure mariadb
-      shell: systemctl set-environment MYSQLD_OPTS="--skip-grant-tables --skip-networking"
+      shell: systemctl set-environment MYSQLD_OPTS="--skip-networking"
     - name: starting mariadb
       shell: systemctl start mariadb
     - name: update mysql root password for all root accounts
-      mysql_user:
-        name: root
-        host: "{{ item }}"
-        password: "{{ mariadb.password }}"
-        login_user: root
-        login_password: "{{ mariadb.password }}"
-        check_implicit_admin: yes
-        priv: "*.*:ALL,GRANT"
-      with_items:
-        - 127.0.0.1
-        - localhost
-        - ::1
+      shell: mysql -e "UPDATE mysql.user SET Password = PASSWORD('{{mariadb.password}}') WHERE User = 'root'"
+    - name: update mysql root password for all root accounts
+      shell: mysql -e "FLUSH PRIVILEGES"
     - name: Startup mariadb
       shell: systemctl enable mariadb
 mysql:
