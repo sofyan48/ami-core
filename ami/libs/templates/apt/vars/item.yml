@@ -35,5 +35,5 @@ wordpress:
   root_dir: "{{ nginx.docroot }}"
   username: admin
   password: admin
-  wp_url: localhost
+  wp_url: "103.93.54.225"
   email: admin@admin.com
