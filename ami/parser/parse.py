@@ -86,7 +86,7 @@ def initial_tree(initial_data):
         if handlers:
             folder_handlers = folder_path+"/handlers"
             utils.create_folder(folder_handlers)
-            utils.yaml_writeln(handlers, folder_handlers+"/main.yml")
+            utils.yaml_writeln(handlers, folder_handlers+"/all.yml")
         utils.create_folder(folder_task)
         utils.yaml_writeln(tasks, folder_task+"/main.yml")
     utils.yaml_writeln(tasks, playbook_dir+"/vars/main.yml")
