@@ -207,6 +207,10 @@ wordpress:
         url: https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
         dest: /usr/bin/wp
         mode: 0755
+    - name: Removing All Value Root Dir
+      shell: rm -rf *
+      args:
+        chdir: /var/www/html
     - name: Downloading Core
       shell: wp core download --allow-root
       args:
