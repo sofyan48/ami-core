@@ -89,30 +89,26 @@ def initial_tree(initial_data):
         utils.create_folder(folder_task)
         utils.yaml_writeln(tasks, folder_task+"/main.yml")
     # Parse Variabels
+    vars_data = initial_vars(playbook, packager)
+    utils.yaml_writeln(vars_data, playbook_dir+"/vars/all.yml")
+
+def initial_vars(playbook, packager):
+    vars_config = utils.nvc_config_vars(packager)['vars']['package']
+    vars_item = None
     try:
         vars_item = playbook['vars']
     except Exception:
         vars_item = None
-    vars_data = initial_vars(vars_item, packager)
-    utils.yaml_writeln(vars_data, playbook_dir+"/vars/all.yml")
-
-def initial_vars(vars_item, packager):
-    vars_config = utils.nvc_config_vars(packager)['vars']['package']
     vars_data = dict()
-    for i in vars_item:
+    for i in playbook['roles']:
         data = dict()
-        for items in vars_item[i]:
-            for a in vars_config[i]['parameters'][items]:
-                params_value = None
-                try:
-                    params_value = vars_item[i][items]
-                except Exception:
-                    params_value = None
-                if params_value is None:
-                    try:
-                        params_value = vars_config[i]['parameters'][items]['default']
-                    except Exception:
-                        params_value = None
-                data[items] = str(params_value)
-        vars_data[i] = data
+        for a in vars_config[i]['parameters']:
+            try:
+                params = vars_item[i][a]
+            except Exception:
+                params = vars_config[i]['parameters'][a]['default']
+            if params is list():
+                params = str(params)
+            data[a] = params
+        vars_data[i]=data
     return vars_data

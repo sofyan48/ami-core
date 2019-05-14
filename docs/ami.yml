@@ -1,7 +1,7 @@
 apt:
   hosts: all
   roles:
-    - common
+    - commons
     - mariadb
     - php
     - nginx

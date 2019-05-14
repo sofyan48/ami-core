@@ -1,7 +1,7 @@
 vars:
   package:
     commons:
-      paramters:
+      parameters:
         install:
           type: string
           label: Install Priority
