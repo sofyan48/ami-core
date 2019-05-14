@@ -3,14 +3,12 @@
 ## Requirements OS
 ```
 apt install ansible python-pip libmysqlclient-dev
-pip install python-mysql
+pip install mysql-python
 ```
 
-## Requirements core
+## Requirements Apps
 ```
 apt install python3 python3-pip python3-dev
-pip3 install pymysql
-
 pip install -e .
 ```
 
