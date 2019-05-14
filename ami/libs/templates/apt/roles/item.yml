@@ -257,11 +257,11 @@ flask:
         state: present
         force: yes
         update_cache: yes
-    - name: Change Themes
+    - name: Setup Environment
       shell: virtualenv -p python3 env
       args:
         chdir: "{{ flask.project_path }}"
-    - name: Change Themes
+    - name: Installing Flask
       shell: env/bin/pip install flask
       args:
         chdir: "{{ flask.project_path }}"
