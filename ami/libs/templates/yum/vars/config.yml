@@ -28,8 +28,16 @@ vars:
           type: string
           label: Document root
           default: '_'
+        group:
+          type: string
+          label: Document root
+          default: 'apache'
     php:
       parameters:
+        version:
+          type: string
+          label: Document root
+          default: ""
         install:
           type: string
           label: Install Priority
@@ -43,7 +51,7 @@ vars:
         version:
           type: string
           label: Document root
-          default: "5.6"
+          default: ""
         install:
           type: string
           label: Install Priority

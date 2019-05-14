@@ -28,6 +28,10 @@ vars:
           type: string
           label: Document root
           default: '_'
+        group:
+          type: string
+          label: Document root
+          default: 'www-data'
     php:
       parameters:
         version:

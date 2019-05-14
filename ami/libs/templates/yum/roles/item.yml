@@ -38,15 +38,6 @@ php:
       yum:
         name: "{{ php.packages }}"
         state: latest
-    - stat: path=/etc/php/7.2/fpm/php.ini
-      register: phpfpm
-    - stat: path=/etc/php/7.2/cli/php.ini
-      register: phpcli
-    - name: ensure timezone is set in cli php.ini
-      lineinfile:
-          dest: /etc/php/7.2/cli/php.ini
-          regexp: 'date.timezone ='
-          line: 'date.timezone = {{ commons.timezone }}'
 php5:
   handlers:
     - name: restart php-fpm
@@ -63,15 +54,6 @@ php5:
     - name: Install PHP Packages
       yum: pkg={{ php5.packages }} state=latest
       when: php.packages is defined
-    - stat: path=/etc/php/fpm/php.ini
-      register: phpfpm
-    - stat: path=/etc/php/cli/php.ini
-      register: phpcli
-    - name: ensure timezone is set in cli php.ini
-      lineinfile:
-        dest: /etc/php/cli/php.ini
-        regexp: 'date.timezone ='
-        line: 'date.timezone = {{ commons.timezone }}'
 composer:
   handlers:
   tasks:
@@ -138,7 +120,6 @@ nginx:
       yum:
         name: nginx
         state: present
-        force: yes
         update_cache: yes
     - name: Add  Nginx.Conf
       copy: src=nginx.conf dest=/etc/nginx owner=root group=root
@@ -197,6 +178,8 @@ wordpress:
         name: "{{ wordpress.username }}"
         password: "{{ wordpress.password }}"
         priv: "*.*:ALL"
+        login_user: "root"
+        login_password: "{{ mariadb.password }}"
         host: localhost
         state: present
     - mysql_db:
