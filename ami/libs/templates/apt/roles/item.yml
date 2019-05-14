@@ -76,6 +76,12 @@ mariadb:
         name: mariadb-server
         state: present
         force: yes
+    - name: stop mariadb
+      shell: systemctl stop mariadb
+    - name: configure mariadb
+      shell: systemctl set-environment MYSQLD_OPTS="--skip-grant-tables --skip-networking"
+    - name: starting mariadb
+      shell: systemctl start mariadb
     - name: update mysql root password for all root accounts
       mysql_user:
         name: root
@@ -87,7 +93,10 @@ mariadb:
         priv: "*.*:ALL,GRANT"
       with_items:
         - 127.0.0.1
+        - localhost
         - ::1
+    - name: Startup mariadb
+      shell: systemctl enable mariadb
 mysql:
   handlers:
   tasks:
