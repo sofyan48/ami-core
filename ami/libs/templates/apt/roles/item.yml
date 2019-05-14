@@ -109,8 +109,7 @@ mysql:
       mysql_db: name={{ mysql.database }} state=import login_user=root login_pasword={{ mysql.root_password }} target=/wwww/{{ mysql.dump }}
       when: mysql.dump
     - name: mysql | Ensure anonymous users are not in the database
-      mysql_user: 
-      name='' host={{ item }} state=absent login_user=root login_password={{ mysql.root_password }}
+      mysql_user: name='' host={{ item }} state=absent login_user=root login_password={{ mysql.root_password }}
       with_items:
         - localhost
 nginx:
