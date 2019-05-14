@@ -2,5 +2,8 @@ apt:
   hosts: all
   roles:
     - commons
-    - node
+    - flask
+  vars:
+    flask:
+      path: /home/ubuntu/flask_testing
 

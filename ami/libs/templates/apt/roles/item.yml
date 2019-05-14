@@ -177,6 +177,8 @@ node:
       raw: sudo bash nodesource_setup.sh
     - name: Install Node
       apt: pkg=nodejs state=latest
+    - name: Install NPM
+      apt: pkg=npm state=latest
 ufw:
   handlers:
   tasks:
@@ -247,6 +249,22 @@ joomla:
 flask:
   handlers:
   tasks:
+    - name: Creates directory Flask
+      shell: mkdir {{ flask.project_path }}
+    - name: Install Virtualenv
+      package:
+        name: virtualenv
+        state: present
+        force: yes
+        update_cache: yes
+    - name: Change Themes
+      shell: virtualenv -p python3 env
+      args:
+        chdir: "{{ flask.project_path }}"
+    - name: Change Themes
+      shell: env/bin/pip install flask
+      args:
+        chdir: "{{ flask.project_path }}"
 drupal:
   handlers:
   tasks:
