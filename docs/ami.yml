@@ -5,3 +5,4 @@ apt:
     - mariadb
     - php
     - nginx
+    - wordpress
