@@ -1,7 +1,7 @@
-apt:
+yum:
   hosts: all
   roles:
-    - common
+    - commons
     - mariadb
     - php
     - nginx

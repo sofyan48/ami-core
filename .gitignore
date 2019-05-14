@@ -109,3 +109,6 @@ ENV/
 
 catatan/*
 docs/playbook
+docs/wp/playbook
+docs/flask/playbook
+docs/nodejs/playbook

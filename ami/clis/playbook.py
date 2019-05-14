@@ -2,7 +2,7 @@ from ami.clis.base import Base
 from signal import signal, SIGINT
 from ami.libs import utils
 from ami.parser import parse
-from ami.libs import ansible_lib, playbook
+from ami.libs import ansible_lib, playbook_lib
 import yaml, os
 
 class Playbook(Base):

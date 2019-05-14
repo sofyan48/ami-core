@@ -1,6 +1,6 @@
 from ami.libs import utils
 
-app_dir = utils.app_cwd()
+app_dir = utils.app_cwd
 ami_file = app_dir+"/ami.yml"
 
 def playbook_create(json):
