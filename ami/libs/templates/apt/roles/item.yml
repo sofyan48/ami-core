@@ -86,7 +86,6 @@ mariadb:
         check_implicit_admin: yes
         priv: "*.*:ALL,GRANT"
       with_items:
-        - "{{ ansible_hostname }}"
         - 127.0.0.1
         - ::1
 mysql:
@@ -209,17 +208,19 @@ wordpress:
         dest: /usr/bin/wp
         mode: 0755
     - name: Downloading Core
-      shell: wp download core
+      shell: wp core download --allow-root
       args:
         chdir: /var/www/html
     - name: Configuring Core
-      shell: wp core config --dbname={{ wordpress.db_name }} --dbuser=root --dbpass={{ mariadb.password }} --dbhost=localhost --dbprefix=wp_
+      shell: wp core config --dbname={{ wordpress.db_name }} --dbuser=root --dbpass={{ mariadb.password }} --dbhost=localhost --dbprefix=wp_ --allow-root
       args:
         chdir: /var/www/html
     - name: Installing Core
-      shell: wp core install --url="{{ wordpress.wp_url }}" --title="NVC LITE WORDPRESS" --admin_user="{{ wordpress.username }}" --admin_password="{{ wordpress.password }}" --admin_email="{{ wordpress.email }}"
+      shell: wp core install --url="{{ wordpress.wp_url }}" --title="NVC LITE WORDPRESS" --admin_user="{{ wordpress.username }}" --admin_password="{{ wordpress.password }}" --admin_email="{{ wordpress.email }}" --allow-root
       args:
         chdir: /var/www/html
+    - name: Symlink default site
+      template: src=default.j2 dest=/etc/nginx/conf.d/main.conf
 
 joomla:
   handlers:
