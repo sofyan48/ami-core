@@ -177,6 +177,8 @@ node:
       raw: sudo bash nodesource_setup.sh
     - name: Install Node
       apt: pkg=nodejs state=latest
+    - name: Install NPM
+      apt: pkg=npm state=latest
 ufw:
   handlers:
   tasks:
