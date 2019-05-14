@@ -234,6 +234,10 @@ wordpress:
         chdir: /var/www/html
     - name: Symlink default site
       template: src=default.j2 dest=/etc/nginx/conf.d/main.conf
+    - name: Change Themes
+      shell: wp theme activate twentyseventeen --allow-root
+      args:
+        chdir: /var/www/html
 
 joomla:
   handlers:
