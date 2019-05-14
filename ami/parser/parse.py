@@ -89,4 +89,4 @@ def initial_tree(initial_data):
             utils.yaml_writeln(handlers, folder_handlers+"/all.yml")
         utils.create_folder(folder_task)
         utils.yaml_writeln(tasks, folder_task+"/main.yml")
-    utils.yaml_writeln(tasks, playbook_dir+"/vars/all.yml")
+    utils.yaml_writeln(vars_item, playbook_dir+"/vars/all.yml")

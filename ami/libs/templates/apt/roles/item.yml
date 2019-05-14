@@ -60,8 +60,10 @@ common:
     - name: Update apt
       apt: update_cache=yes
     - name: Install Extra Packages
-      apt: pkg={{ commons.packages }} state=latest update_cache=yes
+      apt: pkg={{ item }} state=latest update_cache=yes
+      with_items: "{{ commons.packages }}"
       when: commons.packages is defined
+
 
 composer:
   handlers:
