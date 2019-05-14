@@ -22,7 +22,7 @@ nvc:
         type: array
         label: app roles
         default:
-          - vars/all.yml
+          - vars/main.yml
 
   centos:
     url: "https://github.com/ami-project/ami-playbook.git"
