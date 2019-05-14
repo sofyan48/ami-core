@@ -32,7 +32,7 @@ mariadb:
 
 wordpress:
   db_name: wordpress
-  root_dir: {{ nginx.docroot }}
+  root_dir: "{{ nginx.docroot }}"
   username: admin
   password: admin
   wp_url: localhost
