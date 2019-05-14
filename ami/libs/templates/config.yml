@@ -11,7 +11,7 @@ config:
         type: string
         label: host for execute
         default: all
-      vars:
+      vars_files:
         label: Global Variabels
         type: list
         default:
