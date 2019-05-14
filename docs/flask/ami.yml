@@ -5,5 +5,5 @@ apt:
     - flask
   vars:
     flask:
-      path: /home/ubuntu/flask_testing
+      project_path: /home/ubuntu/flask_testing
 
