@@ -208,7 +208,11 @@ wordpress:
         host: localhost
         state: present
     - name: Create a New WP DB called
-      mysql_db: name="{{ wordpress.db_name }}" state=present login_user="{{ wordpress.username }}" login_password="{{ wordpress.password }}"
+      mysql_db:
+        name: "{{ wordpress.db_name }}"
+        state: present
+        login_user: "{{ wordpress.username }}"
+        login_password: "{{ wordpress.password }}"
       state: present
     - name: Install WP-CLI
       get_url:
