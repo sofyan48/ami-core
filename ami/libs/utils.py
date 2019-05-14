@@ -81,7 +81,8 @@ def nvc_config_roles(pkg):
     return yaml_read(app_root+"/templates/"+pkg+"/roles/item.yml")
 
 def nvc_config_vars(pkg):
-    return yaml_read(app_root+"/templates/"+pkg+"/vars/item.yml")
+    # return yaml_read(app_root+"/templates/"+pkg+"/vars/item.yml")
+    return yaml_read(app_root+"/templates/"+pkg+"/vars/config.yml")
 
 def get_cpu_info():
     cpu = psutil.cpu_times()

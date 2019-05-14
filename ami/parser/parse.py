@@ -64,7 +64,6 @@ def initial_tree(initial_data):
     playbook = initial_data['playbook']
     packager = initial_data['pkg']
     roles_item = utils.nvc_config_roles(packager)
-    vars_item = utils.nvc_config_vars(packager)
     checks = utils.template_git(github_url, playbook_dir)
     if not checks:
         utils.log_err("Repo Not Cloning")
@@ -89,4 +88,31 @@ def initial_tree(initial_data):
             utils.yaml_writeln(handlers, folder_handlers+"/all.yml")
         utils.create_folder(folder_task)
         utils.yaml_writeln(tasks, folder_task+"/main.yml")
-    utils.yaml_writeln(vars_item, playbook_dir+"/vars/all.yml")
+    # Parse Variabels
+    try:
+        vars_item = playbook['vars']
+    except Exception:
+        vars_item = None
+    vars_data = initial_vars(vars_item, packager)
+    utils.yaml_writeln(vars_data, playbook_dir+"/vars/all.yml")
+
+def initial_vars(vars_item, packager):
+    vars_config = utils.nvc_config_vars(packager)['vars']['package']
+    vars_data = dict()
+    for i in vars_item:
+        data = dict()
+        for items in vars_item[i]:
+            for a in vars_config[i]['parameters'][items]:
+                params_value = None
+                try:
+                    params_value = vars_item[i][items]
+                except Exception:
+                    params_value = None
+                if params_value is None:
+                    try:
+                        params_value = vars_config[i]['parameters'][items]['default']
+                    except Exception:
+                        params_value = None
+                data[items] = str(params_value)
+        vars_data[i] = data
+    return vars_data
