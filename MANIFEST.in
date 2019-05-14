@@ -6,6 +6,7 @@ include setup.cfg
 include requirements.txt
 include .env
 include ami/libs/templates/repo.yml
+include ami/libs/templates/config.yml
 include ami/libs/templates/apt/roles/item.yml
 include ami/libs/templates/apt/vars/item.yml
 include ami/libs/templates/yum/roles/item.yml
