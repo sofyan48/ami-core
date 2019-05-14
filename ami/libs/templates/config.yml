@@ -15,7 +15,7 @@ config:
         label: Global Variabels
         type: list
         default:
-          - vars/all.yml
+          - vars/main.yml
         rules:
           - commons
           - nginx
