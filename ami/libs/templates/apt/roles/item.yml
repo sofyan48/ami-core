@@ -23,7 +23,7 @@ php:
       lineinfile:
           dest: /etc/php/7.2/cli/php.ini
           regexp: 'date.timezone ='
-          line: 'date.timezone = {{ server.timezone }}'
+          line: 'date.timezone = {{ commons.timezone }}'
 php5:
   handlers:
     - name: restart php5.6-fpm
@@ -53,7 +53,7 @@ php5:
       lineinfile:
         dest: /etc/php/5.6/cli/php.ini
         regexp: 'date.timezone ='
-        line: 'date.timezone = {{ server.timezone }}'
+        line: 'date.timezone = {{ commons.timezone }}'
 common:
   handlers:
   tasks:
@@ -76,6 +76,12 @@ mariadb:
         name: mariadb-server
         state: present
         force: yes
+    - name: Reset password Mariadb
+      raw: systemctl stop mariadb"
+    - name: Reset password Mariadb
+      raw: systemctl set-environment MYSQLD_OPTS="--skip-grant-tables --skip-networking"
+    - name: Reset password Mariadb
+      raw: systemctl start mariadb"
 mysql:
   handlers:
   tasks:

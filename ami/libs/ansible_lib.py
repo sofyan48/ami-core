@@ -83,7 +83,6 @@ def play_book(playbook, passwords={}, inventory=None, extra_var={}):
             tqm.cleanup()
 
 def playbook_file(playbook, passwords={}, inventory=None, extra_var={}):
-    print(playbook)
     source = inventory
     if not inventory:
         source = '/etc/ansible/hosts'
