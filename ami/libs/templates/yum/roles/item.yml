@@ -34,6 +34,8 @@ php:
       yum:
         name: php-fpm
         state: latest
+    - name: Symlink www.conf site
+      template: src=www.conf.j2 dest=/etc/php-fpm.d/www.conf
     - name: Install PHP Packages
       yum:
         name: "{{ php.packages }}"
@@ -122,7 +124,7 @@ nginx:
         state: present
         update_cache: yes
     - name: Add  Nginx.Conf
-      copy: src=nginx.conf dest=/etc/nginx owner=root group=root
+      template: src=nginx.yum.j2 dest=/etc/nginx
     - name: Add  Config
       copy: src=h5bp dest=/etc/nginx owner=root group=root
     - name: Symlink default site

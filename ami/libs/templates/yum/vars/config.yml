@@ -31,7 +31,7 @@ vars:
         group:
           type: string
           label: Document root
-          default: 'apache'
+          default: 'nginx'
     php:
       parameters:
         version:
