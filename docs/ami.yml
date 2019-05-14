@@ -2,7 +2,6 @@ apt:
   hosts: all
   roles:
     - common
-    - ufw
     - mariadb
     - php
     - nginx
