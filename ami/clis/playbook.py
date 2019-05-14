@@ -44,5 +44,5 @@ class Playbook(Base):
                 ami_file = playbook_dir+"/ami.yml"
             # # ami_file = utils.yaml_read("ami.yml")
             # # ansible_lib.play_book(playbook=ami_file, inventory=app_dir+"/inventory")
-            ansible_lib.playbook_file(playbook=ami_file, inventory=app_dir+"/inventory")
+            ansible_lib.playbook_file(playbook=ami_file, inventory=playbook_dir+"/inventory")
             exit()
