@@ -79,7 +79,7 @@ mariadb:
     - name: stop mariadb
       shell: systemctl stop mariadb
     - name: configure mariadb
-      shell: systemctl set-environment MYSQLD_OPTS="--skip-networking"
+      shell: systemctl set-environment MYSQLD_OPTS="--skip-grant-tables --skip-networking"
     - name: starting mariadb
       shell: systemctl start mariadb
     - name: update mysql root password for all root accounts
@@ -200,8 +200,11 @@ ufw:
 wordpress:
   handlers:
   tasks:
+    - name: Create a database user
+      mysql_user: name={{ wordpress.username }} password={{ wordpress.password }} priv=*.*:ALL host=localhost state=present
     - name: Create a New WP DB called
-      mysql_db: name={{ wordpress.db_name }} state=present login_user=root login_password={{ mariadb.password }}
+      mysql_db: name={{ wordpress.db_name }} state=present login_user={{ wordpress.username }} login_password={{ wordpress.password }}
+    state: present
     - name: Install WP-CLI
       get_url:
         url: https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
@@ -216,7 +219,7 @@ wordpress:
       args:
         chdir: /var/www/html
     - name: Configuring Core
-      shell: wp core config --dbname={{ wordpress.db_name }} --dbuser=root --dbpass={{ mariadb.password }} --dbhost=localhost --dbprefix=wp_ --allow-root
+      shell: wp core config --dbname={{ wordpress.db_name }} --dbuser={{ wordpress.username }} --dbpass={{ wordpress.password }} --dbhost=localhost --dbprefix=wp_ --allow-root
       args:
         chdir: /var/www/html
     - name: Installing Core
