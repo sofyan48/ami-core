@@ -144,6 +144,10 @@ vars:
           type: string
           label: Install Priority
           default: '1'
+        path:
+          type: string
+          label: Install Priority
+          default: '/home/ubuntu/flask_app'
 
     apache:
       parameters:

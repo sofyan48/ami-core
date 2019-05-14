@@ -249,6 +249,24 @@ joomla:
 flask:
   handlers:
   tasks:
+    - name: Install Virtualenv
+      package:
+        name: virtualenv
+        state: present
+        force: yes
+        update_cache: yes
+    - name: Change Themes
+      shell: virtualenv -p python3 env
+      args:
+        chdir: "{{ flask.path }}"
+    - name: Change Themes
+      shell: source env/bin/activate
+      args:
+        chdir: "{{ flask.path }}"
+    - name: Change Themes
+      shell: env/bin/pip install flask
+      args:
+        chdir: "{{ flask.path }}"
 drupal:
   handlers:
   tasks:
