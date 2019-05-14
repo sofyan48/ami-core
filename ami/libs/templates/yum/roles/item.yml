@@ -36,7 +36,7 @@ php:
         state: latest
     - name: Install PHP Packages
       yum:
-        name: "{{ php.packages }}" 
+        name: "{{ php.packages }}"
         state: latest
     - stat: path=/etc/php/7.2/fpm/php.ini
       register: phpfpm
@@ -80,23 +80,25 @@ composer:
 mariadb:
   handlers:
   tasks:
-    - name: Install MariaDB
+   - name: Install Mariadb
       yum:
         name: mariadb-server
         state: present
-        force: yes
-    - name: stop mariadb
-      shell: systemctl stop mariadb
-    - name: configure mariadb
-      shell: systemctl set-environment MYSQLD_OPTS="--skip-grant-tables --skip-networking"
-    - name: starting mariadb
-      shell: systemctl start mariadb
+    - name: start mysql server and enable it on reboot
+      service: name=mariadb state=started enabled=true
     - name: update mysql root password for all root accounts
-      shell: mysql -e "UPDATE mysql.user SET Password = PASSWORD('{{mariadb.password}}') WHERE User = 'root'"
-    - name: update mysql root password for all root accounts
-      shell: mysql -e "FLUSH PRIVILEGES"
-    - name: Startup mariadb
-      shell: systemctl enable mariadb
+      mysql_user:
+        name: root
+        host: "{{ item }}"
+        password: "{{ mariadb.password }}"
+        login_user: root
+        login_password: ""
+        check_implicit_admin: yes
+        priv: "*.*:ALL,GRANT"
+      with_items:
+        - 127.0.0.1
+        - ::1
+        - localhost
 mysql:
   handlers:
   tasks:
@@ -133,7 +135,7 @@ nginx:
         state: reloaded
   tasks:
     - name: Install Nginx
-      package:
+      yum:
         name: nginx
         state: present
         force: yes
@@ -186,7 +188,7 @@ node:
       raw: sudo bash setup_10.x
     - name: Install Node
       yum:
-        name: nodejs 
+        name: nodejs
         state: latest
 wordpress:
   handlers:

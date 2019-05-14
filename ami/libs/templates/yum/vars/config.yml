@@ -37,7 +37,7 @@ vars:
         packages:
           type: list
           label: Packages List
-          default: [php-cli, php-common, php-curl, php-dev, php-gd, php-mbstring, php-mysql, php-xml, php-xmlrpc, php-memcached, php-zip]
+          default: [php-cli, php-common, php-curl, php-devel, php-gd, php-mbstring, php-mysql, php-xml, php-xmlrpc, php-memcached, php-zip]
     php5:
       parameters:
         version:
@@ -51,7 +51,7 @@ vars:
         packages:
           type: list
           label: Packages List
-          default: [php-cli, php-common, php-curl, php-dev, php-gd, php-mbstring, php-mcrypt, php-mysql, php-xml, php-xmlrpc, php-memcached, php-zip]
+          default: [php-cli, php-common, php-curl, php-devel, php-gd, php-mbstring, php-mcrypt, php-mysql, php-xml, php-xmlrpc, php-memcached, php-zip]
     mariadb:
       parameters:
         password:
