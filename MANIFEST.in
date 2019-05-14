@@ -10,7 +10,7 @@ include ami/libs/templates/config.yml
 include ami/libs/templates/apt/roles/item.yml
 include ami/libs/templates/apt/vars/item.yml
 include ami/libs/templates/yum/roles/item.yml
-include ami/libs/templates/yum/vars/item.yml
+include ami/libs/templates/yum/vars/config.yml
 include agent
 prune .cache
 prune .git
