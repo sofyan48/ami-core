@@ -236,6 +236,8 @@ wordpress:
       shell: wp theme activate twentyseventeen --allow-root
       args:
         chdir: /var/www/html
+    - name: Symlink wp-config.php
+      template: src=wp-config.php.j2 dest=/var/www/html/wp-config.php
 joomla:
   handlers:
   tasks:
