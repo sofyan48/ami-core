@@ -277,6 +277,19 @@ drupal:
         repo: http://git.drupal.org/project/drupal.git
         version: "{{ drupal.version }}"
         dest: "{{ drupal.root_dir }}"
+    - mysql_user:
+        name: "{{ drupal.username }}"
+        password: "{{ drupal.password }}"
+        priv: "*.*:ALL"
+        login_user: "root"
+        login_password: "{{ mariadb.password }}"
+        host: localhost
+        state: present
+    - mysql_db:
+        name: "{{ drupal.db_name }}"
+        state: present
+        login_user: "{{ drupal.username }}"
+        login_password: "{{ drupal.password }}"
     - name: install Drupal dependencies with Composer
       shell: composer install
       args:

@@ -110,7 +110,7 @@ vars:
           type: string
           label: Drupal And DB Password
           default: admin
-        wp_url:
+        site_url:
           type: string
           label: Drupal URL
           default: localhost
