@@ -52,13 +52,13 @@ pip install mysql-python
 Debian Based
 ```
 apt install python3 python3-pip python3-dev
-pip3 install -e .
+sudo pip3 install -e .
 ```
 
 Centos Based
 ```
 yum install python36 python36-pip python36-dev
-pip3 install -e .
+sudo pip3 install -e .
 ```
 
 # RUNNING APP EXAMPLE
@@ -66,7 +66,7 @@ To see more examples, open the docs folder
 
 ## configure ami playbooks
 
-Make a file with the name ami.yml
+Make a file with the name ami.yml | in ubuntu based change yum to apt
 ```
 yum:
   hosts: all
@@ -81,9 +81,9 @@ yum:
       password: password
     wordpress:
       db_name: testing
-      username: iank
-      password: qwerty123
-      wp_url: "103.93.53.31"
+      username: admin
+      password: password
+      wp_url: localhost
       email: meongbego@gmail.com
 ```
 run playbook configure | wait report in playbook configured
@@ -93,7 +93,7 @@ $ ami playbook configure
 ```
 After this report now execute 
 ```
-$ ami playbook start
+$ sudo ami playbook start
 2019-05-16 04:50:34 localhost.localdomain root[30300] INFO Package Finished
 ```
 
