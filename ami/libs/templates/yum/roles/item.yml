@@ -64,7 +64,7 @@ composer:
   handlers:
   tasks:
     - name: Install Composer
-      shell: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer creates=/usr/composer
+      shell: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer creates=/usr/composer state=absent
 mariadb:
   handlers:
   tasks:
@@ -214,7 +214,7 @@ wordpress:
         dest: /usr/bin/wp
         mode: 0755
     - name: Removing All Value Root Dir
-      shell: rm -rf *
+      shell: rm -rf * state=absent
       args:
         chdir: /var/www/html
     - name: Downloading Core
@@ -226,7 +226,7 @@ wordpress:
       args:
         chdir: /var/www/html
     - name: Installing Core
-      shell: wp core install --url="{{ wordpress.wp_url }}" --title="NVC LITE WORDPRESS" --admin_user="{{ wordpress.username }}" --admin_password="{{ wordpress.password }}" --admin_email="{{ wordpress.email }}" --allow-root
+      shell: wp core install --url="{{ wordpress.wp_url }}" --title="{{wordpress.title}} | NVC LITE WORDPRESS" --admin_user="{{ wordpress.username }}" --admin_password="{{ wordpress.password }}" --admin_email="{{ wordpress.email }}" --allow-root
       args:
         chdir: /var/www/html
     - name: Symlink default site
@@ -308,3 +308,49 @@ drupal:
         mode: 0777
         state: directory
         recurse: yes
+django:
+  handlers:
+  tasks:
+mean:
+  handlers:
+  tasks:
+magento:
+  handlers:
+  tasks:
+    - mysql_user:
+        name: "{{ magento.username }}"
+        password: "{{ magento.password }}"
+        priv: "*.*:ALL"
+        login_user: "root"
+        login_password: "{{ mariadb.password }}"
+        host: localhost
+        state: present
+    - mysql_db:
+        name: "{{ drupal.db_name }}"
+        state: present
+        login_user: "{{ magento.username }}"
+        login_password: "{{ magento.password }}"
+    - name: Download Magento
+      shell: composer create-project --repository=https://repo.magento.com/magento/project-community-edition .
+      args:
+        chdir: "{{ nginx.docroot }}"
+    - name: Permission On magento
+      shell: chwon -R :nginx .
+      args:
+        chdir: "{{ nginx.docroot }}"
+    - name: Permission public F
+      shell: find var generated vendor pub/static pub/media app/etc -type f -exec chmod g+w {} +
+      args:
+        chdir: "{{ nginx.docroot }}"
+    - name: Permission public D
+      shell: find var generated vendor pub/static pub/media app/etc -type d -exec chmod g+ws {} +
+      args:
+        chdir: "{{ nginx.docroot }}"
+    - name: Permission magento execute
+      shell: chmod u+x bin/magento
+      args:
+        chdir: "{{ nginx.docroot }}"
+    - name: Installing And Setup Magento
+      shell: bin/magento setup:install --base-url=http://{{ magento.site_url }} --db-host=localhost --db-name={{ magento.db_name }} --db-user={{ magento.username }} --db-password={{ magento.password }} --backend-frontname=admin --admin-firstname={{ magento.username }} --admin-lastname={{ magento.username }} --admin-email={{ magento.email }} --admin-user={{ magento.username }} --admin-password={{ magento.password }} --language=en_US --currency={{ magento.currency }} --timezone=Asia/Jakarta --use-rewrites=1
+      args:
+        chdir: "{{ nginx.docroot }}/bin/magento"

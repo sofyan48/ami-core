@@ -92,6 +92,10 @@ vars:
           type: string
           label: Wordpress Emails
           default: admin@admin.com
+        title:
+          type: string
+          label: Wordpress Titels
+          default: "NEO"
     drupal:
       parameters:
         version:
@@ -165,3 +169,32 @@ vars:
           type: string
           label: Install Priority
           default: '1'
+
+    magento:
+      parameters:
+        username:
+          type: string
+          label: Magento Username And Database username
+        password:
+          type: string
+          label: Magento Username And Database password
+        version:
+          type: string
+          label: Magento version
+          default: "2.1"
+        site_url:
+          type: string
+          label: Magento site url
+          default: "localhost"
+        db_name:
+          type: string
+          label: Magento Database Name
+          default: "magento"
+        email:
+          type: string
+          label: Magento Email Name
+        currency:
+          type: string
+          label: Magento currency
+          default: IDR
+        
