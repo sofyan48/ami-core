@@ -124,8 +124,7 @@ vars:
           type: string
           label: Install Priority
           default: '1'
-
-    ufw:
+    firewalld:
       parameters:
         install:
           type: string
