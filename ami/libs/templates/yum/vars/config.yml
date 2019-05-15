@@ -94,6 +94,10 @@ vars:
           default: admin@admin.com
     drupal:
       parameters:
+        version:
+          type: string
+          label: Document root
+          default: "8.7.1"
         db_name:
           type: string
           label: Drupal DB Name
@@ -149,6 +153,13 @@ vars:
           default: '/home/ubuntu/flask_app'
 
     apache:
+      parameters:
+        install:
+          type: string
+          label: Install Priority
+          default: '1'
+
+    composer:
       parameters:
         install:
           type: string
