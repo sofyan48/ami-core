@@ -9,7 +9,6 @@ commons:
       yum:
         name: "{{ commons.packages }}"
         state: present
-
 php:
   handlers:
     - name: restart php-fpm
@@ -295,12 +294,8 @@ drupal:
       args:
         chdir: "{{ drupal.root_dir }}"
         creates: "{{ drupal.root_dir }}/vendor/autoload.php"
-    - name: install Drush dependencies with Composer
-      shell: ln -s drush /usr/bin/
-      args:
-        chdir: "/opt/drush"
     - name: install Drupal
-      shell: drush si -y --site-name="NVC LITE" --account-name={{ drupal.username }} --account-pass="{{ drupal.password }}" --db-url=mysql://{{ drupal.username }}:{{ drupal.password }}@localhost/{{ drupal.db_name }}
+      shell: /opt/drush/drush si -y --site-name="NVC LITE" --account-name={{ drupal.username }} --account-pass="{{ drupal.password }}" --db-url=mysql://{{ drupal.username }}:{{ drupal.password }}@localhost/{{ drupal.db_name }}
       args:
         chdir: "{{ drupal.root_dir }}"
     - name: set permissions on the settings file
