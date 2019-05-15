@@ -354,3 +354,5 @@ magento:
       shell: bin/magento setup:install --base-url=http://{{ magento.site_url }} --db-host=localhost --db-name={{ magento.db_name }} --db-user={{ magento.username }} --db-password={{ magento.password }} --backend-frontname=admin --admin-firstname={{ magento.username }} --admin-lastname={{ magento.username }} --admin-email={{ magento.email }} --admin-user={{ magento.username }} --admin-password={{ magento.password }} --language=en_US --currency={{ magento.currency }} --timezone=Asia/Jakarta --use-rewrites=1
       args:
         chdir: "{{ nginx.docroot }}/bin/magento"
+    - name: Symlink default site
+      template: src=default.yum.j2 dest=/etc/nginx/conf.d/main.conf
