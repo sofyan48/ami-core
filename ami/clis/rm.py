@@ -5,16 +5,15 @@ import yaml
 import os
 
 
-class Remove(Base):
+class Rm(Base):
     """
         usage:
-        remove ssh [-u USER]
+        rm
 
-        Run ami remove [command] [option]
+        Run ami rm [command] [option]
 
         Options:
-        -u user --user=USER                                       Users
         -h --help                                                 Print usage
     """
     def execute(self):
-        pass
+        utils.log_warn("Under Construction")

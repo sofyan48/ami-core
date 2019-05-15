@@ -6,9 +6,9 @@ from ansible.playbook.play import Play
 from ansible.executor.task_queue_manager import TaskQueueManager
 from ansible.plugins.callback import CallbackBase
 from ansible.executor.playbook_executor import PlaybookExecutor
+from ami.libs import utils
 import ansible.constants as C
 import os, json
-
 
 class ResultCallback(CallbackBase):
     def v2_runner_on_ok(self, result, **kwargs):
@@ -87,8 +87,14 @@ def playbook_file(playbook, passwords={}, inventory=None, extra_var={}):
     if not inventory:
         source = '/etc/ansible/hosts'
     loader = DataLoader()
-    inventory_data = InventoryManager(loader=loader, sources=[source])
-    variable_manager = VariableManager(loader=loader, inventory=inventory_data)
+    try:
+        inventory_data = InventoryManager(loader=loader, sources=[source])
+    except Exception as e:
+        utils.log_err(e)
+    try:
+        variable_manager = VariableManager(loader=loader, inventory=inventory_data)
+    except Exception as e:
+        utils.log_err(e)
     variable_manager.extra_vars = extra_var
     results_callback = ResultCallback()
     Options = namedtuple('Options',
@@ -110,7 +116,8 @@ def playbook_file(playbook, passwords={}, inventory=None, extra_var={}):
                     'sudo_user',
                     'sudo',
                     'diff'])
-    options = Options(connection='smart',
+    try:
+        options = Options(connection='smart',
                     remote_user=None,
                     ack_pass=None,
                     sudo_user=None,
@@ -128,9 +135,16 @@ def playbook_file(playbook, passwords={}, inventory=None, extra_var={}):
                     listtasks=None,
                     listtags=None,
                     syntax=None)
-    playbook = PlaybookExecutor(playbooks=[playbook],
+    except Exception as e:
+        utils.log_err(e)
+    
+    try:
+        playbook = PlaybookExecutor(playbooks=[playbook],
             inventory=inventory_data,
             variable_manager=variable_manager,
             loader=loader,options=options,passwords=passwords)
-    playbook.run()
+    except Exception as e:
+        utils.log_err(e)
+    else:
+        playbook.run()
 

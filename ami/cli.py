@@ -7,7 +7,9 @@ Options:
   -v, --version                          Print version information and quit
 
 Commands:
-  vm            VM Command
+  playbook                               Playbook Command
+  variabel                               Variabel Command
+  rm                                     Remove Command
 
 Run 'ami COMMAND --help' for more information on a command.
 """

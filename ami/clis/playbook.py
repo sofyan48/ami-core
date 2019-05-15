@@ -23,19 +23,29 @@ class Playbook(Base):
         app_dir = utils.app_cwd
         playbook_dir = parse.playbook_dir
         if self.args['create']:
-            utils.log_rep("Nothing To Future")
+            utils.log_rep("Under Construction")
             exit()
         if self.args['configure']:
             path = None
             if self.args['--file']:
-                path = utils.yaml_read(self.args['--file'])
+                try:
+                    path = utils.yaml_read(self.args['--file'])
+                except Exception as e:
+                    utils.log_err(e)
             else:
-                path = utils.yaml_read("ami.yml")
+                try:
+                    path = utils.yaml_read("ami.yml")
+                except Exception as e:
+                    utils.log_err(e)
             initial_data = parse.initial_parsed(path)
             try:
                 parse.initial_tree(initial_data)
             except Exception as e:
                 utils.log_err(e)
+            except KeyboardInterrupt:
+                utils.log_warn("Prosess Cancelling")
+                utils.rm_dir(playbook_dir)
+                utils.log_rep("Removing playbook cache")
             else:
                 utils.log_rep("Playbook Configured")
             exit()
@@ -45,7 +55,13 @@ class Playbook(Base):
                 ami_file = self.args['--file']
             else:
                 ami_file = playbook_dir+"/ami.yml"
-            # # ami_file = utils.yaml_read("ami.yml")
-            # # ansible_lib.play_book(playbook=ami_file, inventory=app_dir+"/inventory")
-            ansible_lib.playbook_file(playbook=ami_file, inventory=playbook_dir+"/inventory")
+            try:
+                ansible_lib.playbook_file(playbook=ami_file, inventory=playbook_dir+"/inventory")
+            except Exception as e:
+                utils.log_err(e)
+            except KeyboardInterrupt:
+                utils.log_warn("Prosess Cancelling")
+                print("User Canceling Progress Note: if there is an error access password, please delete the roles package in ami.yml")
+            else:
+                utils.log_rep("Package Finished Setup")
             exit()
