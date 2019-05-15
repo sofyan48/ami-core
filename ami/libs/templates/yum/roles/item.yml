@@ -295,6 +295,10 @@ drupal:
       args:
         chdir: "{{ drupal.root_dir }}"
         creates: "{{ drupal.root_dir }}/vendor/autoload.php"
+    - name: install Drush dependencies with Composer
+      shell: ln -s drush /usr/bin/
+      args:
+        chdir: "/opt/drush"
     - name: install Drupal
       shell: drush si -y --site-name="NVC LITE" --account-name={{ drupal.username }} --account-pass="{{ drupal.password }}" --db-url=mysql://{{ drupal.username }}:{{ drupal.password }}@localhost/{{ drupal.db_name }}
       args:
