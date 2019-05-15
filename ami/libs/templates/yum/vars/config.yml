@@ -197,4 +197,10 @@ vars:
           type: string
           label: Magento currency
           default: IDR
-        
+
+    gitlab:
+      parameters:
+        site_url:
+          type: string
+          label: Gitlab site url
+          default: "localhost"

@@ -308,12 +308,6 @@ drupal:
         mode: 0777
         state: directory
         recurse: yes
-django:
-  handlers:
-  tasks:
-mean:
-  handlers:
-  tasks:
 magento:
   handlers:
   tasks:
@@ -356,3 +350,19 @@ magento:
         chdir: "{{ nginx.docroot }}/bin/magento"
     - name: Symlink default site
       template: src=default.yum.j2 dest=/etc/nginx/conf.d/main.conf
+gitlab:
+  handlers:
+    - name: restart Postfix
+      systemd:
+        name: postfix
+        state: started
+        enabled: yes
+  tasks:
+    - name: Install Postfix
+      yum:
+        name: postfix
+        state: present
+    - name: Add Gitlab source package
+      raw: curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh | sudo bash
+    - name: Add Gitlab source package
+      raw: EXTERNAL_URL="{{ gitlab.site_url }}" yum install -y gitlab-ce
