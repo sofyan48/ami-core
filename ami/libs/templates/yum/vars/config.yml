@@ -204,3 +204,16 @@ vars:
           type: string
           label: Gitlab site url
           default: "localhost"
+
+    zabbix:
+      parameters:
+        username:
+          type: string
+          label: Zabbix Username And Database username
+        password:
+          type: string
+          label: Magento Username And Database password
+        db_name:
+          type: string
+          label: Zabbix Database Name
+          default: "zabbix"
