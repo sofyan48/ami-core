@@ -1,8 +1,38 @@
-# MANAGE YOUR SERVERS AND INSTALL SERVER PACKAGE
+# MANAGE YOUR SERVERS 
+
+Package Support
+
+## STACK
+- nginx
+- mean | under construction
+- gitlab | not tested
+- lampp
+
+## Application
+- wordpress
+- drupal
+- magento
+- joomla | under construction
+- redmin | under contruction
+- Firewalld
+- composer
+
+## Database
+- mariadb
+- mysql | not tested
+- cockroachdb
+- mongodb | under construction
+- redis | undercontruction
+
+## Programming Environment
+- php7.2
+- php5.6
+- python3 flask framework environment
+- python3 django framework environment
+- node
 
 
 # INSTALLING
-
 ## Requirements OS
 Ubuntu Based
 ```
