@@ -87,7 +87,7 @@ vars:
         wp_url:
           type: string
           label: Wordpress URL
-          default: localhost
+          default:
         email:
           type: string
           label: Wordpress Emails
