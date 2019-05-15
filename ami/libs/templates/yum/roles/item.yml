@@ -296,7 +296,7 @@ drupal:
         chdir: "{{ drupal.root_dir }}"
         creates: "{{ drupal.root_dir }}/vendor/autoload.php"
     - name: install Drupal
-      shell: drush si -y --site-name="NVC LITE" --account-name={{ drupal.username }} --account-pass="{{ drupal.password }}" --db-url=mysql://{{ drupal.username }}:{{ drupal.password }}@{{ hostvars['db-server']['ansible_default_ipv4']['address'] }}/{{ drupal.db_name }}
+      shell: drush si -y --site-name="NVC LITE" --account-name={{ drupal.username }} --account-pass="{{ drupal.password }}" --db-url=mysql://{{ drupal.username }}:{{ drupal.password }}@localhost/{{ drupal.db_name }}
       args:
         chdir: "{{ drupal.root_dir }}"
     - name: set permissions on the settings file
