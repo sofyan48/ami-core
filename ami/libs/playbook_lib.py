@@ -1,9 +1,9 @@
 from ami.libs import utils
 
 app_dir = utils.app_cwd
-ami_file = app_dir+"/ami.yml"
 
-def playbook_create(json):
+def playbook_create(json, app_name):
+    ami_file = app_dir+"/"+app_name+"/ami.yml"
     try:
         utils.yaml_writeln(json, ami_file)
     except Exception as e:
