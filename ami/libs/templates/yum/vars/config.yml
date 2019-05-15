@@ -154,3 +154,10 @@ vars:
           type: string
           label: Install Priority
           default: '1'
+
+    composer:
+      parameters:
+        install:
+          type: string
+          label: Install Priority
+          default: '1'
