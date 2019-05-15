@@ -94,6 +94,10 @@ vars:
           default: admin@admin.com
     drupal:
       parameters:
+        version:
+          type: string
+          label: Document root
+          default: "8.7.1"
         db_name:
           type: string
           label: Drupal DB Name
