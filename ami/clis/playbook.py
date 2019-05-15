@@ -2,7 +2,7 @@ from ami.clis.base import Base
 from signal import signal, SIGINT
 from ami.libs import utils
 from ami.parser import parse
-from ami.libs import ansible_lib
+from ami.libs import ansible_lib, playbook_lib
 import yaml, os
 
 class Playbook(Base):
@@ -10,6 +10,7 @@ class Playbook(Base):
         usage:
         playbook configure [-f FILE]
         playbook start [-f FILE]
+        playbook create
 
         Run ami playbook [command] [option]
 
@@ -21,6 +22,9 @@ class Playbook(Base):
     def execute(self):
         app_dir = utils.app_cwd
         playbook_dir = parse.playbook_dir
+        if self.args['create']:
+            utils.log_rep("Nothing To Future")
+            exit()
         if self.args['configure']:
             path = None
             if self.args['--file']:

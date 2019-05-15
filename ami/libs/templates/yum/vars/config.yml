@@ -9,7 +9,7 @@ vars:
         packages:
           type: list
           label: Packages List
-          default: [ curl, wget, fail2ban, git, vim, htop, acl, ufw]
+          default: [ curl, wget, fail2ban, git, vim, htop, acl, firewalld, epel-release]
         timezone:
           type: string
           label: Timezone Setting
@@ -31,13 +31,13 @@ vars:
         group:
           type: string
           label: Document root
-          default: 'www-data'
+          default: 'nginx'
     php:
       parameters:
         version:
           type: string
           label: Document root
-          default: '7.2'
+          default: ""
         install:
           type: string
           label: Install Priority
@@ -45,25 +45,21 @@ vars:
         packages:
           type: list
           label: Packages List
-          default: [php7.2-cli, php7.2-common, php7.2-curl, php7.2-dev, php7.2-gd, php7.2-mbstring, php7.2-mysql, php7.2-xml, php7.2-xmlrpc, php7.2-memcached, php7.2-zip]
+          default: [php-cli, php-common, php-curl, php-devel, php-gd, php-mbstring, php-mysql, php-xml, php-xmlrpc, php-memcached, php-zip]
     php5:
       parameters:
         version:
           type: string
           label: Document root
-          default: "5.6"
+          default: ""
         install:
           type: string
           label: Install Priority
           default: '1'
-        ppa:
-          type: string
-          label: PPA DIR
-          default: 'php'
         packages:
           type: list
           label: Packages List
-          default: [ php5.6-cli, php5.6-common, php5.6-curl, php5.6-dev, php5.6-gd, php5.6-mbstring, php5.6-mcrypt, php5.6-mysql, php5.6-xml, php5.6-xmlrpc, php5.6-memcached, php5.6-zip]
+          default: [php-cli, php-common, php-curl, php-devel, php-gd, php-mbstring, php-mcrypt, php-mysql, php-xml, php-xmlrpc, php-memcached, php-zip]
     mariadb:
       parameters:
         password:
@@ -128,8 +124,7 @@ vars:
           type: string
           label: Install Priority
           default: '1'
-
-    ufw:
+    firewalld:
       parameters:
         install:
           type: string
