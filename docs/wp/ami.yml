@@ -2,6 +2,7 @@ yum:
   hosts: all
   roles:
     - commons
+    - firewalld
     - mariadb
     - php
     - nginx

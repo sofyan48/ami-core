@@ -25,17 +25,22 @@ php:
         state: present
     - name: Activate Remi Release
       shell: yum-config-manager --enable remi-php72
-
     - name: Install PHP
       yum:
         name: php
         state: latest
+    - name: Symlink php.ini site
+      template: src=php.ini.yum.j2 dest=/etc/php.ini
     - name: Install php7-fpm
       yum:
         name: php-fpm
         state: latest
     - name: Symlink www.conf site
       template: src=www.conf.j2 dest=/etc/php-fpm.d/www.conf
+    - name: Start php-fpm
+      raw: systemctl start php-fpm
+    - name: Start up php-fpm
+      raw: systemctl enable php-fpm
     - name: Install PHP Packages
       yum:
         name: "{{ php.packages }}"
@@ -143,7 +148,7 @@ nginx:
       lineinfile:
         dest: /etc/nginx/nginx.conf
         regexp: "^user"
-        line: "user www-data;"
+        line: "user nginx;"
         state: present
 apache:
   handlers:
@@ -168,11 +173,24 @@ node:
     - name: Add Node source package
       raw: curl -sL https://rpm.nodesource.com/setup_10.x
     - name: Update Source Package
-      raw: sudo bash setup_10.x
+      raw: bash setup_10.x
     - name: Install Node
       yum:
         name: nodejs
         state: latest
+firewalld:
+  handlers:
+  tasks:
+    - name: Activate Firewalld
+      raw: systemctl start firewalld
+    - name: Startup Firewalld
+      raw: systemctl enable firewalld
+    - name: Open HTTP
+      raw: firewall-cmd --permanent --add-service=http --zone=public
+    - name: Open Https
+      raw: firewall-cmd --permanent --add-service=https --zone=public
+    - name: Open Https
+      raw: firewall-cmd --reload
 wordpress:
   handlers:
   tasks:
@@ -216,7 +234,6 @@ wordpress:
       shell: wp theme activate twentyseventeen --allow-root
       args:
         chdir: /var/www/html
-
 joomla:
   handlers:
   tasks:
