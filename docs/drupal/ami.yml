@@ -5,6 +5,7 @@ yum:
     - mariadb
     - nginx
     - php
+    - composer
     - drupal
   vars:
     mariadb:
