@@ -320,7 +320,7 @@ magento:
         host: localhost
         state: present
     - mysql_db:
-        name: "{{ drupal.db_name }}"
+        name: "{{ magento.db_name }}"
         state: present
         login_user: "{{ magento.username }}"
         login_password: "{{ magento.password }}"
@@ -366,3 +366,41 @@ gitlab:
       raw: curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh | sudo bash
     - name: Add Gitlab source package
       raw: EXTERNAL_URL="{{ gitlab.site_url }}" yum install -y gitlab-ce
+zabbix:
+  handlers:
+  tasks:
+    - mysql_user:
+        name: "{{ zabbix.username }}"
+        password: "{{ zabbix.password }}"
+        priv: "*.*:ALL"
+        login_user: "root"
+        login_password: "{{ mariadb.password }}"
+        host: localhost
+        state: present
+    - mysql_db:
+        name: "{{ zabbix.db_name }}"
+        state: present
+        login_user: "{{ zabbix.username }}"
+        login_password: "{{ zabbix.password }}"
+    - name: Add zabbix source package
+      raw: yum -y install http://repo.zabbix.com/zabbix/3.4/rhel/7/x86_64/zabbix-release-3.4-1.el7.centos.noarch.rpm
+    - name: Install zabbix
+      raw: yum -y install zabbix-get zabbix-server-mysql zabbix-web-mysql zabbix-agent
+    - name: Unzip Zabbix Database
+      shell: gunzip create.sql.gz
+      args:
+        chdir: /usr/share/doc/zabbix-server-mysql-3.4.6
+    - name: Import Zabbix Database
+      mysql_db:
+        state: import
+        name: all
+        target: /usr/share/doc/zabbix-server-mysql-3.4.6/create.sql
+        login_user: "{{ zabbix.username }}"
+        login_password: "{{ zabbix.password }}"
+    - name: Symlink Zabbix Config
+      template: src=zabbix.j2 dest=/etc/zabbix/zabbix_server.conf
+    - name: Started Zabbix
+      systemd:
+        name: zabbix-server
+        state: started
+        enabled: yes
