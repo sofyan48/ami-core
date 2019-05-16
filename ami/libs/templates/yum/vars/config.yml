@@ -178,10 +178,6 @@ vars:
         password:
           type: string
           label: Magento Username And Database password
-        version:
-          type: string
-          label: Magento version
-          default: "2.1"
         site_url:
           type: string
           label: Magento site url
