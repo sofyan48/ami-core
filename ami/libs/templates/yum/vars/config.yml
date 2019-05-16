@@ -144,7 +144,6 @@ vars:
           type: string
           label: Install Priority
           default: '1'
-
     flask:
       parameters:
         install:
@@ -155,21 +154,18 @@ vars:
           type: string
           label: Install Priority
           default: '/home/ubuntu/flask_app'
-
     apache:
       parameters:
         install:
           type: string
           label: Install Priority
           default: '1'
-
     composer:
       parameters:
         install:
           type: string
           label: Install Priority
           default: '1'
-
     magento:
       parameters:
         username:
@@ -193,14 +189,12 @@ vars:
           type: string
           label: Magento currency
           default: IDR
-
     gitlab:
       parameters:
         site_url:
           type: string
           label: Gitlab site url
           default: "localhost"
-
     zabbix:
       parameters:
         username:
@@ -213,3 +207,9 @@ vars:
           type: string
           label: Zabbix Database Name
           default: "zabbix"
+    mongodb:
+      parameters:
+        install:
+          type: string
+          label: Install Priority
+          default: '1'
