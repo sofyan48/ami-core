@@ -1,4 +1,4 @@
-apt:
+yum:
   hosts: all
   roles:
     - commons

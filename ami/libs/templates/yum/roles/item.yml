@@ -172,9 +172,7 @@ node:
   handlers:
   tasks:
     - name: Add Node source package
-      raw: curl -sL https://rpm.nodesource.com/setup_10.x
-    - name: Update Source Package
-      raw: bash setup_10.x
+      raw: curl -sL https://rpm.nodesource.com/setup_10.x | -E bash -
     - name: Install Node
       yum:
         name: nodejs
@@ -383,9 +381,19 @@ zabbix:
         login_user: "{{ zabbix.username }}"
         login_password: "{{ zabbix.password }}"
     - name: Add zabbix source package
-      raw: yum -y install http://repo.zabbix.com/zabbix/3.4/rhel/7/x86_64/zabbix-release-3.4-1.el7.centos.noarch.rpm
+      yum:
+        name: http://repo.zabbix.com/zabbix/3.4/rhel/7/x86_64/zabbix-release-3.4-1.el7.centos.noarch.rpm
+        state: present
     - name: Install zabbix
-      raw: yum -y install zabbix-get zabbix-server-mysql zabbix-web-mysql zabbix-agent
+      yum:
+        name: "{{ packages }}"
+      vars:
+        packages:
+        - zabbix-get
+        - httpd-tools
+        - zabbix-server-mysql
+        - zabbix-web-mysql
+        - zabbix-agent
     - name: Unzip Zabbix Database
       shell: gunzip create.sql.gz
       args:
@@ -404,3 +412,60 @@ zabbix:
         name: zabbix-server
         state: started
         enabled: yes
+grafana:
+  handlers:
+  tasks:
+mongodb:
+  handlers:
+  tasks:
+    - name: Symlink Repo Mongo
+      template: src=repo.yum.j2 dest=/etc/yum.repos.d/mongodb.repo
+    - name: Install mongodb
+      yum:
+        name: mongodb-org
+        state: latest
+    - name: Started Mongodb
+      systemd:
+        name: mongod
+        state: started
+        enabled: yes
+cockroachdb:
+  handlers:
+  tasks:
+mean:
+  handlers:
+  tasks:
+    - name: Install Mean Stack Extra Packages
+      yum:
+        name: "{{ mean.packages }}"
+        state: present
+    - gem:
+      name: sass
+      state: present
+    - name: Install Bower
+      npm:
+        name: bower
+        global: yes
+        state: absent
+    - name: Install Gulp
+      npm:
+        name: gulp
+        global: yes
+        state: absent
+    - git:
+        repo: https://github.com/meanjs/mean.git
+        dest: /var/www/
+    - name: Install packages mean boilerplate.
+      npm:
+        path: /var/www/
+    - name: Starting mean stack
+      shell: npm start
+      args:
+        chdir: /var/www
+
+timesqldb:
+  handlers:
+  tasks:
+redmine:
+  handlers:
+  tasks:
