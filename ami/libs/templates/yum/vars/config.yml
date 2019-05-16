@@ -213,3 +213,9 @@ vars:
           type: string
           label: Install Priority
           default: '1'
+    mean:
+      parameters:
+        packages:
+          type: list
+          label: Packages List
+          default: [gcc-c++, git, make, htop, fontconfig, bzip2, libpng-devel, ruby, ruby-devel]
