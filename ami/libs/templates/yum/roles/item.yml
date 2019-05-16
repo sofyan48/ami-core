@@ -9,6 +9,8 @@ commons:
       yum:
         name: "{{ commons.packages }}"
         state: present
+    - name: Disabled Selinux
+      template: src=selinux.yum.j2 dest=/etc/selinux/config
 php:
   handlers:
     - name: restart php-fpm
@@ -462,7 +464,6 @@ mean:
       shell: npm start
       args:
         chdir: /var/www
-
 timesqldb:
   handlers:
   tasks:
