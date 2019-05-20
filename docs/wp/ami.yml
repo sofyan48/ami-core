@@ -15,5 +15,4 @@ yum:
       username: iank
       password: qwerty123
       wp_url: "103.93.53.31"
-      email: meongbego@gmail.c
-      root_dir: /usr/share/html
+      email: meongbego@gmail.com

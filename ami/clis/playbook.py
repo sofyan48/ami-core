@@ -3,7 +3,8 @@ from signal import signal, SIGINT
 from ami.libs import utils
 from ami.parser import parse
 from ami.libs import ansible_lib, playbook_lib
-import yaml, os
+import yaml
+import os
 
 class Playbook(Base):
     """
@@ -37,6 +38,7 @@ class Playbook(Base):
                     path = utils.yaml_read("ami.yml")
                 except Exception as e:
                     utils.log_err(e)
+                    exit()
             initial_data = parse.initial_parsed(path)
             try:
                 parse.initial_tree(initial_data)
@@ -56,12 +58,15 @@ class Playbook(Base):
             else:
                 ami_file = playbook_dir+"/ami.yml"
             try:
-                ansible_lib.playbook_file(playbook=ami_file, inventory=playbook_dir+"/inventory")
+                ansible_lib.playbook_file(playbook=ami_file, 
+                                          inventory=playbook_dir+"/inventory")
             except Exception as e:
                 utils.log_err(e)
             except KeyboardInterrupt:
                 utils.log_warn("Prosess Cancelling")
-                print("User Canceling Progress Note: if there is an error access password, please delete the roles package in ami.yml")
+                print("User Canceling Progress Note: if there is an error \
+                        access password, please delete the roles \
+                        package in ami.yml")
             else:
                 utils.log_rep("Package Finished Setup")
             exit()
