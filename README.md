@@ -43,7 +43,7 @@ pip install mysql-python
 Centos Based
 ```
 yum install epel-release
-yum install ansible python2-pip python2-dev mariadb-devel gcc
+yum install ansible python2-pip python2-devel mariadb-devel gcc
 pip install mysql-python
 ```
 

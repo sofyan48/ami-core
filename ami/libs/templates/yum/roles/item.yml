@@ -9,6 +9,8 @@ commons:
       yum:
         name: "{{ commons.packages }}"
         state: present
+    - name: Disabled Selinux
+      template: src=selinux.yum.j2 dest=/etc/selinux/config
 php:
   handlers:
     - name: restart php-fpm
@@ -172,7 +174,7 @@ node:
   handlers:
   tasks:
     - name: Add Node source package
-      raw: curl -sL https://rpm.nodesource.com/setup_10.x | -E bash -
+      raw: curl -sL https://rpm.nodesource.com/setup_10.x | bash -
     - name: Install Node
       yum:
         name: nodejs
@@ -432,6 +434,32 @@ mongodb:
 cockroachdb:
   handlers:
   tasks:
+    - name: Add User Cockroachdb
+      shell: useradd cockroach state=absent
+    - name: Creates directory Cockroach
+      file:
+        path: /var/lib/cockroach
+        state: directory
+    - name: Change Owner cockroach dir
+      shell: chown cockroach /var/lib/cockroach state=absent
+    - name: Symlink Cockroach service
+      template: src=cockroach.service.j2 dest=/etc/systemd/system/cockroach.service
+    - name: Download Cockroachdb
+      shell: wget -qO- https://binaries.cockroachdb.com/cockroach-v19.1.0.linux-amd64.tgz | tar  xvz state=absent
+      args:
+        chdir: /tmp/
+    - name: Copying Bin
+      shell: cp -i cockroach-v19.1.0.linux-amd64/cockroach /usr/bin state=absent
+      args:
+        chdir: /tmp/
+    - name: Reloading Daemon
+      systemd:
+        daemon_reload: yes
+    - name: Started Cockroachdb And Enable Auto Startup
+      systemd:
+        name: cockroach
+        state: started
+        enabled: yes
 mean:
   handlers:
   tasks:
@@ -439,30 +467,22 @@ mean:
       yum:
         name: "{{ mean.packages }}"
         state: present
-    - gem:
-      name: sass
-      state: present
+    - name: Install Saas
+      raw: gem install saas
     - name: Install Bower
-      npm:
-        name: bower
-        global: yes
-        state: absent
+      raw: npm install -g bower
     - name: Install Gulp
-      npm:
-        name: gulp
-        global: yes
-        state: absent
+      raw: npm install -g gulp
     - git:
         repo: https://github.com/meanjs/mean.git
-        dest: /var/www/
+        dest: /var/www/mean
     - name: Install packages mean boilerplate.
       npm:
-        path: /var/www/
+        path: /var/www/mean
     - name: Starting mean stack
       shell: npm start
       args:
         chdir: /var/www
-
 timesqldb:
   handlers:
   tasks:

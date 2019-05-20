@@ -16,8 +16,9 @@ import git
 
 app_root = os.path.dirname(os.path.abspath(__file__))
 app_home = os.path.expanduser("~")
-app_cwd =  os.getcwd()
+app_cwd = os.getcwd()
 config_folder = app_home+"/.config/"+__appname__+"/"
+
 
 def question(word):
     answer = False
@@ -30,17 +31,21 @@ def question(word):
         answer = False
     return answer
 
+
 def log_rep(stdin):
     coloredlogs.install()
     logging.info(stdin)
+
 
 def log_warn(stdin):
     coloredlogs.install()
     logging.warn(stdin)
 
+
 def log_err(stdin):
     coloredlogs.install()
     logging.error(stdin)
+
 
 def template_git(url, dir):
     try:
@@ -53,6 +58,7 @@ def template_git(url, dir):
         log_err(e)
         return False
 
+
 def yaml_writeln(stream, path):
     with open(path, '+a') as outfile:
         try:
@@ -61,6 +67,7 @@ def yaml_writeln(stream, path):
             print(exc)
         else:
             return True
+
 
 def yaml_read(path):
     with open(path, 'r') as outfile:
@@ -71,18 +78,23 @@ def yaml_read(path):
         else:
             return data
 
+
 def nvc_repo():
     return yaml_read(app_root+"/templates/repo.yml")
+
 
 def nvc_config():
     return yaml_read(app_root+"/templates/config.yml")
 
+
 def nvc_config_roles(pkg):
     return yaml_read(app_root+"/templates/"+pkg+"/roles/item.yml")
+
 
 def nvc_config_vars(pkg):
     # return yaml_read(app_root+"/templates/"+pkg+"/vars/item.yml")
     return yaml_read(app_root+"/templates/"+pkg+"/vars/config.yml")
+
 
 def get_cpu_info():
     cpu = psutil.cpu_times()
@@ -95,6 +107,7 @@ def get_cpu_info():
         "count": count_cpu,
     }
     return cpu_data
+
 
 def get_memory_info():
     memory = psutil.virtual_memory()
@@ -116,6 +129,7 @@ def get_memory_info():
         }
     }
     return mem_data
+
 
 def get_disk_info():
     disk = psutil.disk_usage('/')
@@ -141,14 +155,17 @@ def create_file(file, path, value=None):
     except Exception as e:
         print(e)
 
+
 def copy(src, dest):
     try:
         shutil.copytree(src, dest)
     except OSError as e:
         print('Directory not copied. Error: %s' % e)
 
+
 def check_folder(path):
     return os.path.isdir(path)
+
 
 def copyfile(src, dest):
     try:
@@ -156,8 +173,10 @@ def copyfile(src, dest):
     except OSError as e:
         print('Directory not copied. Error: %s' % e)
 
+
 def create_folder(path):
     return os.makedirs(path)
+
 
 def read_file(file):
     if os.path.isfile(file):
@@ -165,8 +184,10 @@ def read_file(file):
     else:
         return False
 
+
 def rm_dir(path):
     return shutil.rmtree(path)
+
 
 def token_hash(string):
     random_string = uuid.uuid4()
@@ -175,10 +196,12 @@ def token_hash(string):
         'utf-8')).hexdigest()
     return access_token
 
+
 def get_http(url, headers=None):
     send = requests.get(url, headers=headers)
     respons = send.json()
     return respons
+
 
 def send_http(url, data = None, headers=None):
     send = requests.post(url, json=data, headers=headers)
