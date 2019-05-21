@@ -43,7 +43,7 @@ class Rm(Base):
                 utils.log_warn("User cancelation this process")
                 exit()
             else:
-                utils.log_rep("Delete Playbook Success Fully")
+                utils.log_rep("Delete Playbook Successfully")
             exit()
         
         if self.args['roles']:
