@@ -8,7 +8,9 @@ from ansible.plugins.callback import CallbackBase
 from ansible.executor.playbook_executor import PlaybookExecutor
 from ami.libs import utils
 import ansible.constants as C
-import os, json
+import os
+import json
+
 
 class ResultCallback(CallbackBase):
     def v2_runner_on_ok(self, result, **kwargs):
@@ -92,7 +94,8 @@ def playbook_file(playbook, passwords={}, inventory=None, extra_var={}):
     except Exception as e:
         utils.log_err(e)
     try:
-        variable_manager = VariableManager(loader=loader, inventory=inventory_data)
+        variable_manager = VariableManager(loader=loader,
+            inventory=inventory_data)
     except Exception as e:
         utils.log_err(e)
     variable_manager.extra_vars = extra_var
@@ -139,10 +142,13 @@ def playbook_file(playbook, passwords={}, inventory=None, extra_var={}):
         utils.log_err(e)
     
     try:
-        playbook = PlaybookExecutor(playbooks=[playbook],
+        playbook = PlaybookExecutor(
+            playbooks=[playbook],
             inventory=inventory_data,
             variable_manager=variable_manager,
-            loader=loader,options=options,passwords=passwords)
+            loader=loader,
+            options=options,
+            passwords=passwords)
     except Exception as e:
         utils.log_err(e)
     else:

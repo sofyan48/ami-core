@@ -6,17 +6,20 @@ from ami.libs import ansible_lib, playbook_lib
 import yaml
 import os
 
+
 class Playbook(Base):
     """
         usage:
         playbook configure [-f FILE]
         playbook start [-f FILE]
-        playbook create
+        playbook create [-p PACKGE] [-a APPS]
 
         Run ami playbook [command] [option]
 
         Options:
         -f file --file=FILE                                        File
+        -p package --package=PACKAGE                               Package
+        -a apps --apps=APPS                                        Application
         -i inventory --inventory=INVENTORY                         Inventory
         -h --help                                                  Print usage
     """
@@ -24,8 +27,12 @@ class Playbook(Base):
         app_dir = utils.app_cwd
         playbook_dir = parse.playbook_dir
         if self.args['create']:
-            utils.log_rep("Under Construction")
+            pkg = self.args['--package']
+            apps = self.args['--apps']
+            data_playbook = playbook_lib.playbook_create(pkg, apps)
+            utils.yaml_writeln(data_playbook, app_dir+"/ami.yml")
             exit()
+        
         if self.args['configure']:
             path = None
             if self.args['--file']:
@@ -51,6 +58,7 @@ class Playbook(Base):
             else:
                 utils.log_rep("Playbook Configured")
             exit()
+        
         if self.args['start']:
             path = None
             if self.args['--file']:

@@ -8,21 +8,21 @@ import os
 class Variabel(Base):
     """
         usage:
-        variabel show [-o OS]
-        variabel show  [-o OS] [-p PACKAGE]
+        variabel show [-p PACKAGE]
+        variabel show  [-p PACKAGE] [-a APPS]
 
         Run ami variable [command] [option]
 
         Options:
-        -p package --package=PACKAGE                              Show Variabel Package
-        -o os --os=OS                                             Set Distro Based | yum or apt
+        -p package --package=PACKAGE                              Set Distro Based | yum or apt
+        -a apps --apps=APPS                                       set apps
         -h --help                                                 Print usage
     """
     def execute(self):
         if self.args['show']:
-            os_name = self.args['--os']
-            if self.args['--package']:
-                package = self.args['--package']
+            os_name = self.args['--package']
+            if self.args['--apps']:
+                package = self.args['--apps']
                 vars_lib.show_variabels(os_name, package)
                 exit()
             vars_lib.show_variabels_all(os_name)

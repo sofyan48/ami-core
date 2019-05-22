@@ -37,7 +37,7 @@ vars:
         version:
           type: string
           label: Document root
-          default: ""
+          default: "7.2"
         install:
           type: string
           label: Install Priority
@@ -51,7 +51,7 @@ vars:
         version:
           type: string
           label: Document root
-          default: ""
+          default: "5.6"
         install:
           type: string
           label: Install Priority
@@ -65,13 +65,11 @@ vars:
         password:
           type: string
           label: Mariadb Root Password
-          default: root
     wordpress:
       parameters:
         db_name:
           type: string
           label: Wordpress DB Name
-          default: wordpress
         root_dir:
           type: variabels
           label: Root Dir For Wordpress
@@ -79,19 +77,15 @@ vars:
         username:
           type: string
           label: Wordpress And DB Username
-          default: admin
         password:
           type: string
           label: Wordpress And DB Password
-          default: admin
         wp_url:
           type: string
           label: Wordpress URL
-          default:
         email:
           type: string
           label: Wordpress Emails
-          default: admin@admin.com
         title:
           type: string
           label: Wordpress Titels
