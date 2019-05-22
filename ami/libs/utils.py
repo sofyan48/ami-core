@@ -17,7 +17,6 @@ import git
 app_root = os.path.dirname(os.path.abspath(__file__))
 app_home = os.path.expanduser("~")
 app_cwd = os.getcwd()
-config_folder = app_home+"/.config/"+__appname__+"/"
 
 
 def question(word):
@@ -79,10 +78,6 @@ def yaml_read(path):
             return data
 
 
-def nvc_repo():
-    return yaml_read(app_root+"/templates/repo.yml")
-
-
 def nvc_config():
     return yaml_read(app_root+"/templates/config.yml")
 
@@ -113,14 +108,14 @@ def get_memory_info():
     memory = psutil.virtual_memory()
     swap = psutil.virtual_memory()
     mem_data = {
-        "physmem":{
+        "physmem": {
             "total": memory[0],
             "available": memory[1],
             "percent": memory[2],
             "used": memory[3],
             "free": memory[4]
         },
-        "swap":{
+        "swap": {
           "total": swap[0],
             "available": swap[1],
             "percent": swap[2],
@@ -143,10 +138,9 @@ def get_disk_info():
 
 
 def create_file(file, path, value=None):
-    default_path = config_folder
     if path:
         default_path = str(path)
-    f=open(default_path+"/"+file, "a+")
+    f = open(default_path+"/"+file, "a+")
     f.write(value)
     f.close()
 

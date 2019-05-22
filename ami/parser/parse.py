@@ -94,6 +94,7 @@ def initial_tree(initial_data):
     vars_data = initial_vars(playbook, packager)
     utils.yaml_writeln(vars_data, playbook_dir+"/vars/all.yml")
 
+
 def initial_vars(playbook, packager):
     vars_config = utils.nvc_config_vars(packager)['vars']['package']
     vars_item = None
@@ -112,5 +113,5 @@ def initial_vars(playbook, packager):
             if params is list():
                 params = str(params)
             data[a] = params
-        vars_data[i]=data
+        vars_data[i] = data
     return vars_data

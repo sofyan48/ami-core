@@ -193,6 +193,12 @@ firewalld:
     - name: Open Https
       raw: firewall-cmd --reload
 wordpress:
+  rules:
+    - commons
+    - mariadb
+    - php
+    - nginx
+    - wordpress
   handlers:
   tasks:
     - mysql_user:
@@ -260,6 +266,13 @@ flask:
       args:
         chdir: "{{ flask.project_path }}"
 drupal:
+  rules:
+    - commons
+    - mariadb
+    - nginx
+    - php
+    - composer
+    - drupal
   handlers:
   tasks:
     - name: clone Drush repository

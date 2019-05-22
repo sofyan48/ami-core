@@ -39,7 +39,7 @@ config:
           - drupal
   yum:
     url: "https://github.com/ami-project/ami-packages.git"
-    description: "Template that installs NVC Lite ubuntu."
+    description: "Template that installs NVC Lite Centos."
     parameters:
       vars:
         label: Global Variabels
@@ -75,3 +75,7 @@ config:
           - joomla
           - flask
           - drupal
+          - zabbix
+          - magento
+          - mongodb
+          - mean
