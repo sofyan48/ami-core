@@ -1,0 +1,17 @@
+yum:
+  hosts: all
+  roles:
+    - commons
+    - mariadb
+    - nginx
+    - php
+    - wordpress
+  vars:
+    mariadb:
+      password: password
+    wordpress:
+      db_name: testing
+      username: admin
+      password: password
+      wp_url: localhost
+      email: meongbego@gmail.com
